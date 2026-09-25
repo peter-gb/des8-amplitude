@@ -1,6 +1,9 @@
 # Data folders
 data/
 .json
+.zip
+.gz
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
