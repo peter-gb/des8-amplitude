@@ -45,25 +45,32 @@ with zipfile.ZipFile(filename) as zip_ref:
     print("Extracted files:")
     for ext_file in zip_ref.namelist():
         print(ext_file)
-        gz_list.append(ext_file)
 
-print(gz_list)
 
-####### ALL NEEDS DOCUMENTING ################
 
+####### ALL NEEDS DOCUMENTING ###################################
+
+# identify the gz files to be extracted to json
 gz_list = Path(data_dir).rglob("*.json.gz")
+
+# extract to json files
 for gz in map(Path,gz_list):
     dest = gz.with_suffix("")
     with gzip.open(gz,"rb") as f_in, open(dest, "wb") as f_out:
         shutil.copyfileobj(f_in,f_out)
     print(f"{gz} -> {dest}")
 
-del_list = Path(data_dir).rglob("*.zip")
-print(del_list)
-# identify the gz files to be extracted to json
 
 
+# identify the zip and gz files to be deleted
+print("We could delete these files")
+extensions = {".gz", ".zip"}
+del_files = [f for f in Path(data_dir).rglob("*") if f.suffix in extensions]
+for f in del_files:
+    print(f)
 
-# TEST
-# print(response.content)
-
+# or identify .json to be moved to a json folder instead?
+print("We could move these files")
+js_list = Path(data_dir).rglob("*.json")
+for j in js_list:
+    print(j)
