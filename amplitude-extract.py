@@ -4,8 +4,10 @@ import dotenv                   # for accessing credentials from .env file
 import os                       # for managing files & folders
 from datetime import datetime   # only need datetime for timestamping filenames
 import zipfile                  # for unzipping the extracted archive
+import gzip                     # for unzipping the gzs to json
 # import json                     # for processing json
-
+import shutil
+from pathlib import Path
 
 # Prepare folder and timestamp variables for extracted zip file file name
 data_dir = 'data/zips'
@@ -35,12 +37,31 @@ print(status)
 with open(filename, "wb") as file:          # wb here means write binary as we don't have text but a zip
     file.write(response.content)
 
+gz_list = []
+
 # use zipfile to extract the contents of the zip
 with zipfile.ZipFile(filename) as zip_ref:
     zip_ref.extractall(path = data_dir)
     print("Extracted files:")
     for ext_file in zip_ref.namelist():
         print(ext_file)
+        gz_list.append(ext_file)
+
+print(gz_list)
+
+####### ALL NEEDS DOCUMENTING ################
+
+gz_list = Path(data_dir).rglob("*.json.gz")
+for gz in map(Path,gz_list):
+    dest = gz.with_suffix("")
+    with gzip.open(gz,"rb") as f_in, open(dest, "wb") as f_out:
+        shutil.copyfileobj(f_in,f_out)
+    print(f"{gz} -> {dest}")
+
+del_list = Path(data_dir).rglob("*.zip")
+print(del_list)
+# identify the gz files to be extracted to json
+
 
 
 # TEST
