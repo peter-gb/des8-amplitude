@@ -3,25 +3,31 @@ import requests                 # for making the API calls
 import dotenv                   # for accessing credentials from .env file
 import os                       # for managing files & folders
 from datetime import datetime   # only need datetime for timestamping filenames
+from datetime import timedelta  # for datediff
 import zipfile                  # for unzipping the extracted archive
 import gzip                     # for unzipping the gzs to json
 # import json                     # for processing json
 import shutil
 from pathlib import Path
 
+
 # Prepare folder and timestamp variables for extracted zip file file name
-today = datetime.now().strftime("%Y-%m-%d")
-data_dir = f'data/zips/{today}'
+yesterday = datetime.now() - timedelta(days=1)
+yesterday_folder_name = yesterday.strftime("%Y-%m-%d")
+data_dir = f'data/zips/{yesterday_folder_name}'
 os.makedirs(data_dir, exist_ok=True)
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-filename = f'{data_dir}/amplitude_{timestamp}.zip'
+filename = f'{data_dir}/amplitude_{yesterday_folder_name}_{timestamp}.zip'
+
+start = yesterday.strftime("%Y%m%dT00") 
+end = yesterday.strftime("%Y%m%dT23") 
 
 
 # Prepare variables for the request
 url = 'https://analytics.eu.amplitude.com/api/2/export'
 params = {
-    'start': '20260927T00',
-    'end': '20260927T23'
+    'start': start,
+    'end': end
 }
 
 # Retrieve and prepare API Credentials
