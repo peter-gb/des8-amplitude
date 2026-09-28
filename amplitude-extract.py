@@ -10,7 +10,8 @@ import shutil
 from pathlib import Path
 
 # Prepare folder and timestamp variables for extracted zip file file name
-data_dir = 'data/zips'
+today = datetime.now().strftime("%Y-%m-%d")
+data_dir = f'data/zips/{today}'
 os.makedirs(data_dir, exist_ok=True)
 timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 filename = f'{data_dir}/amplitude_{timestamp}.zip'
@@ -19,8 +20,8 @@ filename = f'{data_dir}/amplitude_{timestamp}.zip'
 # Prepare variables for the request
 url = 'https://analytics.eu.amplitude.com/api/2/export'
 params = {
-    'start': '20260924T00',
-    'end': '20260924T23'
+    'start': '20260927T00',
+    'end': '20260927T23'
 }
 
 # Retrieve and prepare API Credentials
