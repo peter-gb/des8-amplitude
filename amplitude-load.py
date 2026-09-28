@@ -25,4 +25,4 @@ for file in json_list:
         s3_client.upload_file(file,aws_bucket_name,file.name)
         print(f'File uploaded successfully ({file.name}).')
     except Exception as e:
-        print('An error has occurred!')
+        print(f'An error has occurred! {e}')
