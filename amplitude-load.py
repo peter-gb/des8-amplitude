@@ -1,6 +1,7 @@
 import os                               # file & folder management
 from dotenv import load_dotenv          # credentials access
 import boto3                            # aws client
+from pathlib import Path                # easily identify files
 
 # load dotenv credentials
 load_dotenv()
@@ -15,12 +16,13 @@ s3_client = boto3.client(
     aws_secret_access_key = aws_secret_key
 )
 
+# identify all json files to be uploaded 
+json_list = list(Path('data/zips/').rglob("*.json"))
 
-test_upload = 'data/zips/2026-09-27/100011471/100011471_2026-09-27_0#0.json'
-filename = '100011471_2026-09-27_0#0.json'
-
-print(f"Uploading file: {test_upload}")
-print(f"Bucket name: {aws_bucket_name}")
-print(f"S3 Key: {filename}")
-
-s3_client.upload_file(test_upload,aws_bucket_name,filename)
+# for loop to iterate through and send to s3
+for file in json_list:
+    try:
+        s3_client.upload_file(file,aws_bucket_name,file.name)
+        print(f'File uploaded successfully ({file.name}).')
+    except Exception as e:
+        print('An error has occurred!')
