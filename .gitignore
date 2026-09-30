@@ -1,8 +1,10 @@
-# Data folders
+# Data folders & logs
 data/
 .json
 .zip
 .gz
+logs/
+.log
 
 
 # Byte-compiled / optimized / DLL files
