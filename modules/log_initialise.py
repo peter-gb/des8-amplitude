@@ -3,6 +3,9 @@ import logging
 from datetime import datetime
 
 def logging_initialise():
+    """This function initialises the logger, saving to a logs directory, with the timestamp as the file name. No input arguments needed.
+
+    """
     # opted to hardcode logs and timestamp inside the function, rather than requiring arguments to be sent in
     
     # prepare the logging, make a directory and define how the logs will be generated.

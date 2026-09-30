@@ -4,16 +4,16 @@ import os                       # for managing files & folders
 from datetime import datetime   # only need datetime for timestamping filenames
 from datetime import timedelta  # for datediff
 import zipfile                  # for unzipping the extracted archive
-import gzip                     # for unzipping the gzs to json
-import shutil
-from pathlib import Path
+import gzip                     # for opening the gzs
+import shutil                   # for saving the gzs as json
+from pathlib import Path        # for searching through directories
 from modules.log_initialise import logging_initialise
 
 # initialise logging
 logger = logging_initialise()
 
 # send a logging message to say we are up and running
-logger.info("Logger succesfully initialised - let's go!")
+logger.info("Logger succesfully initialised - let's extract!")
 
 
 # Prepare folder and timestamp variables for extracted zip file file name
