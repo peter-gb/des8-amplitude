@@ -16,9 +16,10 @@ logger.info("Logger succesfully initialised - let's go!")
 url = 'https://analytics.eu.amplitude.com/api/2/export'
 
 # prepare the data directory using yesterday's date
-yesterday = datetime.now() - timedelta(days=1)
-yesterday_folder_name = yesterday.strftime("%Y-%m-%d")
-data_dir = f'data/zips/{yesterday_folder_name}'
+data_date = datetime.now() - timedelta(days=1)
+data_date_dir_name = data_date.strftime("%Y-%m-%d")
+data_dir = f'data/zips/{data_date_dir_name}'
+
 
 # get secrets from dotenv
 load_dotenv()
@@ -34,7 +35,7 @@ AWS_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
 
 
 # call the extract function with credentials and URL
-extract_request(url, AMP_API_KEY, AMP_SECRET_KEY)
+extract_request(url, data_date, data_dir, AMP_API_KEY, AMP_SECRET_KEY)
 
 # call the load function with credentials inc bucket name
 load_to_s3(data_dir,AWS_ACCESS_KEY,AWS_SECRET_KEY,AWS_BUCKET_NAME)

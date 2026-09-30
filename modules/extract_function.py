@@ -1,6 +1,5 @@
 import logging
 from datetime import datetime   # only need datetime for timestamping filenames
-from datetime import timedelta  # for datediff
 import os                       # for managing files & folders
 import requests                 # for making the API calls
 import zipfile                  # for unzipping the extracted archive
@@ -14,28 +13,28 @@ logger = logging.getLogger(__name__)
 
 
 # define the extract function and its inputs
-def extract_request(url:str, AMP_API_KEY:str, AMP_SECRET_KEY:str):
+def extract_request(url:str, data_date:str, data_dir:str, AMP_API_KEY:str, AMP_SECRET_KEY:str):
     """Extracts JSON from the specified URL, for yesterday relative to runtime, a data directory is created
            
     Args:
         url (str): give the URL to be visited
+        data_date (str): the date for which data is to be fetched
+        data_dir (str): Target directory for response payload
         AMP_API_KEY (str): Amplitude API Key
         AMP_SECRET_KEY (str): Amplitude Secret Key
     """
     # Prepare folder and timestamp variables for extracted zip file file name
-    yesterday = datetime.now() - timedelta(days=1)
-    yesterday_folder_name = yesterday.strftime("%Y-%m-%d")
-    data_dir = f'data/zips/{yesterday_folder_name}'
     os.makedirs(data_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-    filename = f'{data_dir}/amplitude_{yesterday_folder_name}_{timestamp}.zip'
+    data_date_dir_name = data_date.strftime("%Y-%m-%d")
+    filename = f'{data_dir}/amplitude_{data_date_dir_name}_{timestamp}.zip'
 
     # define start and end params for request
-    start = yesterday.strftime("%Y%m%dT00")
-    end = yesterday.strftime("%Y%m%dT23")
+    start = data_date.strftime("%Y%m%dT00")
+    end = data_date.strftime("%Y%m%dT23")
 
     # log progress
-    logger.info(f'Data dir created at {data_dir}. Attempting data fetch for {yesterday_folder_name} at {timestamp}.')
+    logger.info(f'Data dir created at {data_dir}. Attempting data fetch for {data_date} at {timestamp}.')
 
     # Prepare variables for the request
     params = {
